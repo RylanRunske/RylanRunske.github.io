@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rylan Runske — Mechanical Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+
+  :root{
+    --navy-deep:#0B1D2E;
+    --navy-mid:#122A40;
+    --navy-line:#1E3D57;
+    --paper:#ECE7DA;
+    --ink:#D7DEE5;
+    --muted:#7C93A6;
+    --blue-line:#6FA8C9;
+    --amber:#E8A33D;
+    --amber-dim:#8A6626;
+    --radius:2px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--navy-deep);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+  }
+
+  ::selection{ background:var(--amber); color:var(--navy-deep); }
+
+  h1,h2,h3,h4{
+    font-family:'Oswald', sans-serif;
+    letter-spacing:0.01em;
+    margin:0;
+    color:var(--paper);
+  }
+
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  a{ color:inherit; }
+
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- background grid ---------- */
+  .blueprint-grid{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background-image:
+      linear-gradient(var(--navy-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--navy-line) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.18;
+  }
+
+  /* ---------- title-block header ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(11,29,46,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--navy-line);
+  }
+
+  .titleblock{
+    max-width:1080px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:stretch;
+  }
+
+  .tb-cell{
+    padding:10px 20px;
+    border-right:1px solid var(--navy-line);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .tb-cell:last-child{ border-right:none; }
+
+  .tb-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:9px;
+    letter-spacing:0.12em;
+    color:var(--muted);
+    text-transform:uppercase;
+    margin-bottom:2px;
+  }
+  .tb-value{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--paper);
+    white-space:nowrap;
+  }
+
+  nav.tb-nav{
+    display:flex;
+    align-items:center;
+    gap:24px;
+    padding:0 20px;
+    overflow-x:auto;
+  }
+  nav.tb-nav a{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--muted);
+    white-space:nowrap;
+    transition:color 0.2s;
+    position:relative;
+  }
+  nav.tb-nav a:hover{ color:var(--amber); }
+
+  .tb-cell.linkedin-cell a{
+    text-decoration:none;
+    color:var(--blue-line);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.06em;
+  }
+  .tb-cell.linkedin-cell a:hover{ color:var(--amber); }
+
+  @media (max-width:760px){
+    .titleblock{ grid-template-columns:1fr; }
+    .tb-cell{ border-right:none; border-bottom:1px solid var(--navy-line); }
+    nav.tb-nav{ gap:16px; }
+  }
+
+  /* ---------- section scaffolding ---------- */
+  section{
+    position:relative;
+    z-index:1;
+    padding:120px 0 100px;
+  }
+
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:16px;
+    margin-bottom:56px;
+  }
+  .section-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--amber);
+  }
+  .section-head h2{
+    font-size:32px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .section-rule{
+    flex:1;
+    height:1px;
+    background:var(--navy-line);
+    position:relative;
+    top:2px;
+  }
+
+  /* dimension line divider */
+  .dim-divider{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--blue-line);
+    opacity:0.7;
+    margin:8px 0 0;
+  }
+  .dim-divider .tick{ width:1px; height:8px; background:var(--blue-line); }
+  .dim-divider .line{ flex:1; height:1px; background:var(--blue-line); }
+  .dim-divider .label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.08em;
+    white-space:nowrap;
+  }
+
+  /* ---------- hero ---------- */
+  #hero{
+    min-height:92vh;
+    display:flex;
+    align-items:center;
+    padding-top:80px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:48px;
+    align-items:end;
+  }
+  .hero-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--amber);
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(42px, 7vw, 84px);
+    line-height:0.98;
+    text-transform:uppercase;
+  }
+  .hero h1 .last{ color:var(--blue-line); }
+  .hero-role{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:15px;
+    color:var(--ink);
+    margin-top:20px;
+    max-width:560px;
+  }
+  .hero-objective{
+    margin-top:22px;
+    max-width:600px;
+    color:var(--muted);
+    font-size:15px;
+  }
+  .flag-row{
+    display:flex;
+    gap:10px;
+    margin-top:24px;
+    flex-wrap:wrap;
+  }
+  .flag-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.05em;
+    border:1px solid var(--navy-line);
+    padding:5px 10px;
+    color:var(--muted);
+  }
+  .hero-sheet{
+    justify-self:end;
+    text-align:right;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    border-left:1px solid var(--navy-line);
+    padding-left:24px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    min-width:160px;
+  }
+  .hero-sheet div span{ display:block; color:var(--paper); font-size:13px; margin-top:2px; }
+
+  .scroll-cue{
+    margin-top:56px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    color:var(--muted);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-decoration:none;
+    letter-spacing:0.08em;
+  }
+  .scroll-cue svg{ animation:bob 1.8s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(5px);} }
+
+  @media (max-width:760px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero-sheet{ border-left:none; border-top:1px solid var(--navy-line); padding-left:0; padding-top:20px; text-align:left; }
+  }
+
+  /* ---------- experience: revision log ---------- */
+  .rev-log{
+    border:1px solid var(--navy-line);
+  }
+  .rev-row{
+    border-bottom:1px solid var(--navy-line);
+    cursor:pointer;
+  }
+  .rev-row:last-child{ border-bottom:none; }
+  .rev-row-main{
+    display:grid;
+    grid-template-columns:70px 1fr auto auto;
+    gap:20px;
+    align-items:center;
+    padding:20px 24px;
+  }
+  .rev-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--amber);
+  }
+  .rev-body h3{
+    font-size:18px;
+    text-transform:none;
+    letter-spacing:0;
+    color:var(--paper);
+  }
+  .rev-role{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--blue-line);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-bottom:4px;
+    display:block;
+  }
+  .rev-loc{
+    font-size:13px;
+    color:var(--muted);
+  }
+  .rev-date{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    text-align:right;
+    white-space:nowrap;
+  }
+  .rev-toggle{
+    width:16px; height:16px;
+    position:relative;
+    flex-shrink:0;
+  }
+  .rev-toggle::before, .rev-toggle::after{
+    content:'';
+    position:absolute;
+    background:var(--muted);
+    transition:transform 0.25s ease;
+  }
+  .rev-toggle::before{ width:12px; height:1px; top:7px; left:2px; }
+  .rev-toggle::after{ width:1px; height:12px; top:2px; left:7px; }
+  .rev-row[aria-expanded="true"] .rev-toggle::after{ transform:scaleY(0); }
+  .rev-row[aria-expanded="true"] .rev-toggle::before{ background:var(--amber); }
+
+  .rev-panel{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.35s ease;
+    background:var(--navy-mid);
+  }
+  .rev-row[aria-expanded="true"] .rev-panel{ max-height:600px; }
+  .rev-panel-inner{ padding:6px 24px 26px 114px; }
+  .rev-panel-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--amber);
+    margin-bottom:10px;
+  }
+  .rev-bullets{ margin:0; padding-left:18px; color:var(--ink); font-size:14px; }
+  .rev-bullets li{ margin-bottom:8px; }
+
+  @media (max-width:640px){
+    .rev-row-main{ grid-template-columns:40px 1fr; row-gap:8px; }
+    .rev-date{ grid-column:2; text-align:left; }
+    .rev-toggle{ display:none; }
+    .rev-panel-inner{ padding-left:24px; }
+  }
+
+  /* ---------- projects: featured card ---------- */
+  .featured-project{
+    border:1px solid var(--navy-line);
+    margin-bottom:28px;
+  }
+  .fp-head{
+    padding:28px 28px 0;
+  }
+  .fp-badge{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--amber);
+    border:1px solid var(--amber-dim);
+    padding:3px 8px;
+    margin-bottom:16px;
+  }
+  .fp-head h3{
+    font-size:26px;
+    text-transform:none;
+    letter-spacing:0;
+    color:var(--paper);
+    margin-bottom:6px;
+  }
+  .fp-meta{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--blue-line);
+    margin-bottom:18px;
+  }
+  .fp-summary{
+    color:var(--ink);
+    font-size:15px;
+    max-width:760px;
+    margin-bottom:20px;
+  }
+  .fp-team{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:22px;
+  }
+  .fp-team span{ color:var(--paper); }
+  .fp-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:24px;
+  }
+  .fp-tags span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    border:1px solid var(--navy-line);
+    padding:4px 10px;
+  }
+  .fp-photo-gallery{
+    display:flex;
+    gap:14px;
+    float:right;
+    max-width:440px;
+    margin:0 0 20px 24px;
+  }
+  .fp-photo-item{
+    position:relative;
+    border:1px solid var(--navy-line);
+    padding:6px;
+    flex:1;
+    min-width:0;
+  }
+  .fp-photo-item img{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+  .fp-photo-item.fp-diagram{
+    background:var(--navy-mid);
+  }
+  .fp-photo-item.fp-diagram svg{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+  .fp-photo-gallery:has(.fp-diagram){
+    max-width:220px;
+  }
+  .fp-photo-cap{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+    text-align:center;
+    padding-top:6px;
+  }
+  @media (max-width:640px){
+    .fp-photo-gallery{ float:none; max-width:100%; margin:0 0 20px; }
+  }
+  .fp-toggle{
+    width:100%;
+    text-align:left;
+    background:var(--navy-mid);
+    border:none;
+    border-top:1px solid var(--navy-line);
+    color:var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:16px 28px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .fp-toggle:hover{ color:var(--amber); }
+  .fp-toggle svg{ transition:transform 0.25s ease; }
+  .fp-toggle[aria-expanded="true"] svg{ transform:rotate(180deg); }
+  .fp-panel{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.4s ease;
+    background:var(--navy-mid);
+  }
+  .fp-toggle[aria-expanded="true"] + .fp-panel{ max-height:900px; }
+  .fp-panel-inner{ padding:8px 28px 28px; }
+  .fp-stage{
+    margin-bottom:18px;
+  }
+  .fp-stage-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--amber);
+    margin-bottom:8px;
+  }
+  .fp-stage ul{
+    margin:0;
+    padding-left:18px;
+    color:var(--ink);
+    font-size:14px;
+  }
+  .fp-stage li{ margin-bottom:6px; }
+  .fp-results{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+    gap:1px;
+    background:var(--navy-line);
+    border:1px solid var(--navy-line);
+    margin-top:18px;
+  }
+  .fp-result{
+    background:var(--navy-deep);
+    padding:16px;
+    text-align:center;
+  }
+  .fp-result .val{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:20px;
+    color:var(--amber);
+  }
+  .fp-result .lbl{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+
+  /* ---------- projects (placeholder scaffold) ---------- */
+  .project-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:24px;
+  }
+  .project-slot{
+    border:1px dashed var(--navy-line);
+    padding:28px;
+    min-height:220px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    position:relative;
+  }
+  .project-slot .slot-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--amber-dim);
+  }
+  .project-slot h3{
+    font-size:20px;
+    color:var(--muted);
+    margin:14px 0 8px;
+  }
+  .project-slot p{
+    font-size:13px;
+    color:var(--muted);
+    margin:0;
+  }
+  .slot-corner{
+    position:absolute;
+    top:10px; right:10px;
+    width:10px; height:10px;
+    border-top:1px solid var(--blue-line);
+    border-right:1px solid var(--blue-line);
+    opacity:0.6;
+  }
+
+  /* ---------- skills ---------- */
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:1px;
+    background:var(--navy-line);
+    border:1px solid var(--navy-line);
+  }
+  .skill-group{
+    background:var(--navy-deep);
+    padding:26px 24px;
+  }
+  .skill-group h4{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--amber);
+    margin-bottom:16px;
+  }
+  .skill-group ul{ list-style:none; margin:0; padding:0; }
+  .skill-group li{
+    font-size:14px;
+    color:var(--ink);
+    padding:6px 0;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+  }
+  .skill-group li:last-child{ border-bottom:none; }
+
+  /* ---------- leadership / athletics ---------- */
+  .leadership-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+  }
+  .lead-card{
+    border-left:2px solid var(--amber);
+    padding:6px 0 6px 20px;
+  }
+  .lead-card .lead-title{
+    color:var(--paper);
+    font-size:16px;
+    font-family:'Oswald', sans-serif;
+    letter-spacing:0.01em;
+  }
+  .lead-card .lead-meta{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--blue-line);
+    margin-top:4px;
+  }
+  .lead-card .lead-sub{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+  @media (max-width:640px){ .leadership-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- contact ---------- */
+  #contact{ padding-bottom:140px; }
+  .contact-panel{
+    border:1px solid var(--navy-line);
+    padding:48px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:24px;
+  }
+  .contact-panel p{ max-width:420px; color:var(--muted); font-size:14px; margin:0; }
+  .contact-actions{ display:flex; gap:12px; flex-wrap:wrap; }
+  .contact-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--navy-deep);
+    background:var(--amber);
+    padding:12px 22px;
+    transition:background 0.2s;
+  }
+  .contact-btn:hover{ background:var(--paper); }
+  .contact-btn.secondary{
+    background:transparent;
+    color:var(--paper);
+    border:1px solid var(--navy-line);
+  }
+  .contact-btn.secondary:hover{ border-color:var(--amber); color:var(--amber); }
+
+  footer{
+    text-align:center;
+    padding:28px 0;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    border-top:1px solid var(--navy-line);
+    position:relative;
+    z-index:1;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="blueprint-grid"></div>
+
+<header>
+  <div class="titleblock">
+    <div class="tb-cell">
+      <span class="tb-label">Dwg No.</span>
+      <span class="tb-value">RR&mdash;001</span>
+    </div>
+    <nav class="tb-nav">
+      <a href="#hero">Home</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#leadership">Leadership</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="tb-cell linkedin-cell">
+      <a href="https://www.linkedin.com/in/rylan-runske-39b769386/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="hero-eyebrow">Mechanical Engineering · Auburn University</p>
+          <h1>Rylan<br><span class="last">Runske</span></h1>
+          <p class="hero-role">Product Design · DFM &amp; Manufacturing Engineering</p>
+          <p class="hero-objective">Senior Mechanical Engineering student pursuing a design and manufacturing engineering role. Three internships of progressive responsibility in product design, reverse engineering, and manufacturing process improvement — including ownership of components released to production and hands-on validation testing.</p>
+          <div class="flag-row">
+            <span class="flag-tag">U.S. Citizen</span>
+            <span class="flag-tag">Dual Citizenship — Sweden</span>
+            <span class="flag-tag">Auburn, AL</span>
+          </div>
+          <a href="#experience" class="scroll-cue">
+            Scroll to review
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+        </div>
+        <div class="hero-sheet">
+          <div><span class="tb-label" style="margin:0;">Scale</span><span>1:1</span></div>
+          <div><span class="tb-label" style="margin:0;">GPA</span><span>3.28</span></div>
+          <div><span class="tb-label" style="margin:0;">Grad</span><span>May 2027</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-num mono">01</span>
+        <h2>Experience</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="rev-log">
+
+        <div class="rev-row" role="button" tabindex="0" aria-expanded="false">
+          <div class="rev-row-main">
+            <span class="rev-tag">REV A</span>
+            <div class="rev-body">
+              <span class="rev-role">Engineering Intern, Product Design &amp; Development</span>
+              <h3>Nautique Boat Company</h3>
+              <p class="rev-loc">Orlando, FL</p>
+            </div>
+            <span class="rev-date">May 2026 – Aug 2026</span>
+            <span class="rev-toggle" aria-hidden="true"></span>
+          </div>
+          <div class="rev-panel">
+            <div class="rev-panel-inner">
+              <p class="rev-panel-label">Scope of Work</p>
+              <ul class="rev-bullets">
+                <li>Owned component design projects end-to-end from concept through production release.</li>
+                <li>Designed and validated jigs/fixtures used in production assembly.</li>
+                <li>Applied reverse engineering and surface modeling in Siemens NX to redesign legacy components for manufacturing.</li>
+                <li>Managed CAD data and revision control through PDM to support design reviews and production handoff.</li>
+                <li>Conducted water (field) testing for production validation, producing formal engineering test reports.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-row" role="button" tabindex="0" aria-expanded="false">
+          <div class="rev-row-main">
+            <span class="rev-tag">REV B</span>
+            <div class="rev-body">
+              <span class="rev-role">Process Engineering Intern, Manufacturing</span>
+              <h3>Roswell Marine</h3>
+              <p class="rev-loc">Rockledge, FL</p>
+            </div>
+            <span class="rev-date">May 2025 – Aug 2025</span>
+            <span class="rev-toggle" aria-hidden="true"></span>
+          </div>
+          <div class="rev-panel">
+            <div class="rev-panel-inner">
+              <p class="rev-panel-label">Scope of Work</p>
+              <ul class="rev-bullets">
+                <li>Analyzed production workflows across manufacturing departments to identify inefficiencies and implemented lean manufacturing solutions.</li>
+                <li>Implemented 5S standards and established a Kanban system in the Blend Department, balancing production load between Blend and Waterjet propulsion assembly lines.</li>
+                <li>Coordinated across departments to implement lean manufacturing systems.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-row" role="button" tabindex="0" aria-expanded="false">
+          <div class="rev-row-main">
+            <span class="rev-tag">REV C</span>
+            <div class="rev-body">
+              <span class="rev-role">Mechanical Engineering Intern, PD&amp;E</span>
+              <h3>Roswell Marine</h3>
+              <p class="rev-loc">Rockledge, FL</p>
+            </div>
+            <span class="rev-date">May 2024 – Aug 2024</span>
+            <span class="rev-toggle" aria-hidden="true"></span>
+          </div>
+          <div class="rev-panel">
+            <div class="rev-panel-inner">
+              <p class="rev-panel-label">Scope of Work</p>
+              <ul class="rev-bullets">
+                <li>Designed and modeled original components in SolidWorks to support new product development.</li>
+                <li>Built and tested prototypes through bench and shake table testing.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-row" role="button" tabindex="0" aria-expanded="false">
+          <div class="rev-row-main">
+            <span class="rev-tag">REV D</span>
+            <div class="rev-body">
+              <span class="rev-role">Assembly Technician (Seasonal)</span>
+              <h3>Roswell Marine</h3>
+              <p class="rev-loc">Rockledge, FL</p>
+            </div>
+            <span class="rev-date">Jun 2020 – Aug 2023</span>
+            <span class="rev-toggle" aria-hidden="true"></span>
+          </div>
+          <div class="rev-panel">
+            <div class="rev-panel-inner">
+              <p class="rev-panel-label">Scope of Work</p>
+              <ul class="rev-bullets">
+                <li>Built speakers, amplifier boards, towers, wiring harnesses, and components on the production line, consistently meeting daily and weekly output quotas across three production seasons.</li>
+                <li>Performed visual inspection and functional testing of speakers and amplifiers, identifying and flagging non-conforming units before production release.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS (placeholder scaffold) -->
+  <section id="projects">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-num mono">02</span>
+        <h2>Projects</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="featured-project">
+        <div class="fp-head">
+          <span class="fp-badge">Team Project</span>
+          <h3>Furuta Pendulum — Modeling, Balance &amp; Swing-Up Control</h3>
+          <p class="fp-meta">Quanser Qube Servo 3 · ME 3140 — Modeling &amp; Control of Dynamic Systems · Auburn University · Fall 2026</p>
+          <div class="fp-photo-gallery">
+            <div class="fp-photo-item fp-diagram">
+              <svg viewBox="0 0 260 240" xmlns="http://www.w3.org/2000/svg">
+                <!-- base -->
+                <ellipse cx="130" cy="205" rx="42" ry="10" fill="none" stroke="#6FA8C9" stroke-width="1.4"/>
+                <rect x="88" y="205" width="84" height="10" fill="none" stroke="#6FA8C9" stroke-width="1.4"/>
+                <ellipse cx="130" cy="215" rx="42" ry="10" fill="none" stroke="#6FA8C9" stroke-width="1.4"/>
+                <!-- motor housing cylinder -->
+                <rect x="112" y="150" width="36" height="55" fill="none" stroke="#6FA8C9" stroke-width="1.4"/>
+                <ellipse cx="130" cy="150" rx="18" ry="6" fill="none" stroke="#6FA8C9" stroke-width="1.4"/>
+                <!-- vertical z axis -->
+                <line x1="130" y1="150" x2="130" y2="55" stroke="#7C93A6" stroke-width="1" stroke-dasharray="3,3"/>
+                <text x="134" y="52" font-family="IBM Plex Mono, monospace" font-size="9" fill="#7C93A6">z</text>
+                <!-- arm (phi rotation) -->
+                <line x1="130" y1="150" x2="205" y2="150" stroke="#E8A33D" stroke-width="3"/>
+                <circle cx="130" cy="150" r="3.5" fill="#E8A33D"/>
+                <!-- phi arc -->
+                <path d="M 155 150 A 25 25 0 0 1 148 128" fill="none" stroke="#E8A33D" stroke-width="1" />
+                <text x="152" y="122" font-family="IBM Plex Mono, monospace" font-size="12" fill="#E8A33D" font-style="italic">&#966;</text>
+                <!-- pendulum pivot at arm end -->
+                <circle cx="205" cy="150" r="3.5" fill="#ECE7DA"/>
+                <!-- pendulum rod (theta rotation), tilted near-upright -->
+                <line x1="205" y1="150" x2="222" y2="72" stroke="#ECE7DA" stroke-width="3"/>
+                <circle cx="222" cy="72" r="4.5" fill="none" stroke="#ECE7DA" stroke-width="1.4"/>
+                <!-- theta angle marker from vertical dashed to rod -->
+                <line x1="205" y1="150" x2="205" y2="90" stroke="#7C93A6" stroke-width="1" stroke-dasharray="3,3"/>
+                <path d="M 205 118 A 32 32 0 0 1 213 108" fill="none" stroke="#ECE7DA" stroke-width="1" />
+                <text x="212" y="104" font-family="IBM Plex Mono, monospace" font-size="12" fill="#ECE7DA" font-style="italic">&#952;</text>
+                <!-- dimension ticks along base -->
+                <line x1="88" y1="222" x2="88" y2="228" stroke="#7C93A6" stroke-width="1"/>
+                <line x1="172" y1="222" x2="172" y2="228" stroke="#7C93A6" stroke-width="1"/>
+                <line x1="88" y1="226" x2="172" y2="226" stroke="#7C93A6" stroke-width="1"/>
+                <text x="112" y="236" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7C93A6">L_r</text>
+                <!-- encoder callout -->
+                <line x1="148" y1="150" x2="170" y2="130" stroke="#7C93A6" stroke-width="0.8"/>
+                <text x="172" y="129" font-family="IBM Plex Mono, monospace" font-size="7" fill="#7C93A6">ENCODER</text>
+              </svg>
+              <p class="fp-photo-cap">Two-DOF Apparatus</p>
+            </div>
+          </div>
+          <p class="fp-summary">Derived the full nonlinear dynamics of a rotary (Furuta) inverted pendulum from Lagrangian mechanics, validated the model against the physical plant, then designed and hardware-tested a state-feedback balance controller, a cascade controller for arm-position tracking, and a bang-bang swing-up controller that hands off to balance mode automatically.</p>
+          <p class="fp-team">Team — <span>Ricardo Lizardi</span> · <span>Rylan Runske</span> · <span>Mitchell Sevy</span> · <span>Alan Stevenson</span></p>
+          <div class="fp-tags">
+            <span>MATLAB</span><span>Lagrangian Mechanics</span><span>State-Space Control</span><span>Pole Placement</span><span>System ID</span><span>Cascade Control</span>
+          </div>
+        </div>
+        <button class="fp-toggle" aria-expanded="false">
+          Step-by-Step Breakdown
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="fp-panel">
+          <div class="fp-panel-inner">
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Step 1 — Modeling</p>
+              <ul>
+                <li>Derived nonlinear equations of motion for the two-DOF system (arm angle φ, pendulum angle θ) via Euler-Lagrange, then linearized about the unstable upright equilibrium.</li>
+                <li>Identified friction and effective arm inertia empirically against the plant's own p-code, correcting the textbook rod-inertia estimate by 2×.</li>
+                <li>Validated the linear model against real plant response: 7.7° RMS pendulum error under a 1V step input.</li>
+              </ul>
+            </div>
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Step 2 — Balance Controller</p>
+              <ul>
+                <li>Designed a state-feedback regulator via pole placement to stabilize the pendulum upright, targeting settle time &lt; 0.5s, overshoot &lt; 5%, and peak voltage &lt; 10V.</li>
+                <li>Linear model met spec: 0.43s settle time, 2.46% overshoot, 5.15V peak.</li>
+              </ul>
+            </div>
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Step 3 — Real-Hardware Retuning</p>
+              <ul>
+                <li>The linear-model gains oscillated badly on the real plant (measured overshoot ~10× the prediction), so poles were re-placed with more conservative damping.</li>
+                <li>Final gains passed all specs on hardware: 0.442s settle time, 0% overshoot, 3.03V peak.</li>
+              </ul>
+            </div>
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Step 4 — Cascade Tracking + Swing-Up</p>
+              <ul>
+                <li>Built a two-loop cascade controller (fast inner loop balances pendulum tilt, slow outer loop commands that tilt to move the arm) to track a nonzero arm-position reference — achieved 1° steady-state arm error tracking to 30°.</li>
+                <li>Implemented a hysteretic bang-bang swing-up controller to pump energy into the pendulum from hanging-down, with automatic handoff to the cascade balance controller once near upright (handoff at 3.86s in testing).</li>
+              </ul>
+            </div>
+
+            <div class="fp-results">
+              <div class="fp-result"><div class="val">0.442s</div><div class="lbl">Settle Time</div></div>
+              <div class="fp-result"><div class="val">0%</div><div class="lbl">Overshoot (HW)</div></div>
+              <div class="fp-result"><div class="val">3.03V</div><div class="lbl">Peak Voltage</div></div>
+              <div class="fp-result"><div class="val">1°</div><div class="lbl">Arm SS Error</div></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="featured-project">
+        <div class="fp-head">
+          <span class="fp-badge">Team Project</span>
+          <h3>Rankine Cycle Optimization — 700 MW Coal Power Plant</h3>
+          <p class="fp-meta">MECH 3020 — Thermodynamics II Design Project · Auburn University · Spring 2026</p>
+          <p class="fp-summary">Modeled the Rankine cycle of a 700 MW unit at the James H. Miller Electric Generator Plant and evaluated two feasible retrofit options — a lower reheat pressure and an open feedwater heater — against the base cycle on efficiency, cost, and emissions, then used a weighted decision matrix to recommend the strongest overall option.</p>
+          <p class="fp-team">Team — <span>Moises Munoz Paredes</span> · <span>Keaton Cornett</span> · <span>Braden Miceli</span> · <span>Rylan Runske</span></p>
+          <div class="fp-tags">
+            <span>Rankine Cycle</span><span>Thermodynamics</span><span>Cost Analysis</span><span>Decision Matrix</span><span>Regenerative Feedwater Heating</span>
+          </div>
+        </div>
+        <button class="fp-toggle" aria-expanded="false">
+          Step-by-Step Breakdown
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="fp-panel">
+          <div class="fp-panel-inner">
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Base Plant</p>
+              <ul>
+                <li>Modeled the reference plant as a single-reheat Rankine cycle (2400 psi boiler, 800 psi reheat) using enthalpy states from steam tables, establishing baseline efficiency (33.63%), mass flow rate, and heat rejected for comparison.</li>
+              </ul>
+            </div>
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Design 1 — Lower Reheat Pressure</p>
+              <ul>
+                <li>Reduced reheat pressure to 600 psi (25% of boiler pressure, per literature guidance) to isolate its effect on cycle performance.</li>
+                <li>Result: efficiency +0.213%, essentially free to implement, but only a marginal efficiency gain.</li>
+              </ul>
+            </div>
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Design 2 — Open Feedwater Heater</p>
+              <ul>
+                <li>Added an open feedwater heater at 200 psi to preheat feedwater before the boiler, re-deriving the cycle's efficiency and energy-balance equations for the added extraction/mixing stages.</li>
+                <li>Result: efficiency +2.65% (to 34.52%), mass flow rate stayed within the 15% piping constraint, and heat rejected to the river dropped 3.9% — but required ~$225,000 in new equipment and labor versus ~$300 for the reheat-pressure change.</li>
+              </ul>
+            </div>
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Cost, Emissions &amp; Decision Matrix</p>
+              <ul>
+                <li>Converted efficiency gains to coal savings and daily fuel cost, then to CO₂ emissions, for both design options.</li>
+                <li>Weighted a decision matrix (cost 40%, efficiency 40%, environmental effect 20%) across all three configurations; the open feedwater heater scored highest overall (3.2 vs. 3.0 and 2.6) despite its higher upfront cost, on the strength of its efficiency and emissions gains.</li>
+              </ul>
+            </div>
+
+            <div class="fp-results">
+              <div class="fp-result"><div class="val">34.52%</div><div class="lbl">Best-Case Efficiency</div></div>
+              <div class="fp-result"><div class="val">−3.9%</div><div class="lbl">Heat Rejected</div></div>
+              <div class="fp-result"><div class="val">$225K</div><div class="lbl">OFWH Capital Cost</div></div>
+              <div class="fp-result"><div class="val">3.2/5</div><div class="lbl">Decision Matrix Score</div></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="featured-project">
+        <div class="fp-head">
+          <span class="fp-badge">Team Project</span>
+          <h3>Programmable Air-to-Land Cruise Missile Sensor System</h3>
+          <p class="fp-meta">MECH 3050 — Measurement &amp; Instrumentation Final Project · Auburn University · Spring 2025</p>
+          <p class="fp-summary">Selected and specified an onboard sensor suite for an inertial navigation and guidance system, covering the theory of operation, technical specifications, signal conditioning, and system-level integration of each sensor with the flight computer.</p>
+          <p class="fp-team">Team "War Damn Warheads" — <span>Jay Bowler</span> · <span>Ricardo Lizardi</span> · <span>Rylan Runske</span> · <span>Payton Wildman</span> · <span>James Downs</span></p>
+          <div class="fp-tags">
+            <span>Sensor Selection</span><span>Signal Conditioning</span><span>Inertial Navigation</span><span>SPI / UART Integration</span><span>System Design</span>
+          </div>
+        </div>
+        <button class="fp-toggle" aria-expanded="false">
+          Step-by-Step Breakdown
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="fp-panel">
+          <div class="fp-panel-inner">
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Gyroscope &amp; Accelerometer — ADIS16470 IMU</p>
+              <ul>
+                <li>Specified the triaxial MEMS gyroscope (Coriolis-effect sensing, ±2000°/sec range, 8°/hr bias stability) and accelerometer (±40g range, 13 µg bias stability) for attitude and velocity/position estimation via integration.</li>
+                <li>Addressed vibration rectification error and mounting near the vehicle's center of gravity to minimize drift.</li>
+              </ul>
+            </div>
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Radar Altimeter — Garmin GRA 5500</p>
+              <ul>
+                <li>Specified a frequency-modulated continuous-wave radar altimeter for terrain-relative altitude, immune to the atmospheric-pressure errors of a barometric altimeter.</li>
+                <li>Planned digital interfacing with the flight computer for altitude-hold corrective pitch commands, and filtering for low-altitude signal-to-noise degradation.</li>
+              </ul>
+            </div>
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Doppler Radar Velocity Sensor — OmniPreSense OPS243-A</p>
+              <ul>
+                <li>Specified a 24 GHz continuous-wave Doppler sensor for direct, non-contact ground-speed measurement, derived the Doppler-shift-to-velocity relationship, and accounted for the mounting angle correction needed against the true velocity vector.</li>
+              </ul>
+            </div>
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">System Integration</p>
+              <ul>
+                <li>Defined the flight computer as the central hub, communicating with the IMU over SPI, the Doppler sensor over UART, and receiving digital altitude data from the radar altimeter, running navigation/control at a 50–200 Hz update rate.</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="featured-project">
+        <div class="fp-head">
+          <span class="fp-badge">Team Project</span>
+          <h3>Mechanical Pachinko Machine — No-Electronics Design Challenge</h3>
+          <p class="fp-meta">MECH 3200 — Mechanical Pachinko Challenge · Team 91 "We Da Best" · Auburn University</p>
+          <div class="fp-photo-gallery">
+            <div class="fp-photo-item">
+              <img src="pachinko_cad.jpg" alt="SolidWorks CAD render of the pachinko machine's internal playfield and launcher mechanism" />
+              <p class="fp-photo-cap">CAD Model</p>
+            </div>
+            <div class="fp-photo-item">
+              <img src="pachinko_photo.jpg" alt="Finished pachinko machine with acrylic playfield, 3D-printed pegs and obstacles, and orange ball-return housing" />
+              <p class="fp-photo-cap">Finished Device</p>
+            </div>
+          </div>
+          <p class="fp-summary">Designed and built a fully mechanical pachinko-style game — no electronics allowed — that launches, scores, and resets a continuous cycle of steel balls through a playfield of static and dynamic obstacles. Took the project from a product design specification and morphological matrix through five competing playfield concepts, a weighted decision matrix, an FMEA on the launcher mechanism, and hands-on fabrication.</p>
+          <p class="fp-team">Team 91 — <span>Daniel Marie</span> · <span>Phillip Retzer</span> · <span>Rylan Runske</span> · <span>McGuire Scivally</span> · <span>Mitchell Sevy</span></p>
+          <div class="fp-tags">
+            <span>Mechanism Design</span><span>3D Printing</span><span>Waterjet / Laser Cutting</span><span>FMEA</span><span>Decision Matrix</span><span>DFM</span>
+          </div>
+        </div>
+        <button class="fp-toggle" aria-expanded="false">
+          Step-by-Step Breakdown
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="fp-panel">
+          <div class="fp-panel-inner">
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Requirements &amp; Concept Generation</p>
+              <ul>
+                <li>Set engineering requirements/limits from the challenge rules — 20 steel balls in continuous circulation, ≤5-minute reset on a single mechanical input, size and weight limits, and no electronics, adhesives, bands, or threading allowed in the build.</li>
+                <li>Used a morphological matrix to break the machine into core functions (dose ball, launch ball, interact with obstacles, update score, capture balls, reset) and generated independent playfield concepts, one per team member, evaluated against a shared selection chart.</li>
+              </ul>
+            </div>
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Design Selection</p>
+              <ul>
+                <li>Narrowed five candidate playfields to three finalists using a pass/fail selection chart on realism, cost, and safety, then scored the finalists in a weighted decision matrix (launcher 30%, static obstacles 20%, dynamic obstacles 20%, jackpot 10%, scoring 20%).</li>
+                <li>Selected the highest-scoring concept — a peg-and-roller playfield with a jackpot button — for its strong, repeatable launcher and dense static-obstacle field.</li>
+              </ul>
+            </div>
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Reliability — FMEA</p>
+              <ul>
+                <li>Ran a failure modes and effects analysis on the launcher and structure, identifying gear shearing as the highest-severity failure mode and designing the gear teeth and print orientation specifically to keep its risk priority number low.</li>
+                <li>Addressed lower-severity risks (spring wear, launcher jams, bolt shearing) with tighter tolerances and printed/mechanical safeguards rather than added parts.</li>
+              </ul>
+            </div>
+
+            <div class="fp-stage">
+              <p class="fp-stage-label">Fabrication</p>
+              <ul>
+                <li>Built the frame from MDF (laser-cut and band-sawed, drill-pressed and countersunk for clean fastening), the playfield obstacles from 3D-printed PLA, and a small aluminum counterweight (waterjet-cut) to correct front-heavy balance — assembled in layers with M3 hardware throughout.</li>
+                <li>Used transparent acrylic for the front and rear playfield covers, chosen for visibility into the game and clean laser-cut tolerances.</li>
+              </ul>
+            </div>
+
+            <div class="fp-results">
+              <div class="fp-result"><div class="val">&lt;10 lb</div><div class="lbl">Total Weight</div></div>
+              <div class="fp-result"><div class="val">$88.10</div><div class="lbl">Build Cost</div></div>
+              <div class="fp-result"><div class="val">20</div><div class="lbl">Balls in Circulation</div></div>
+              <div class="fp-result"><div class="val">No Electronics</div><div class="lbl">All-Mechanical</div></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-num mono">03</span>
+        <h2>Skills</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-group">
+          <h4>Design &amp; Analysis</h4>
+          <ul>
+            <li>SolidWorks (CAD / Surfacing / Sheet Metal / FEA)</li>
+            <li>Siemens NX — Surface Modeling</li>
+            <li>Reverse Engineering</li>
+            <li>Design for Manufacturing (DFM)</li>
+            <li>Tolerance Stack-Up</li>
+            <li>GD&amp;T</li>
+            <li>PDM</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h4>Manufacturing &amp; Process</h4>
+          <ul>
+            <li>Lean Manufacturing</li>
+            <li>Kanban</li>
+            <li>Kaizen</li>
+            <li>5S</li>
+            <li>Process Engineering</li>
+            <li>Production Support</li>
+            <li>Additive Manufacturing</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h4>Test &amp; Validation</h4>
+          <ul>
+            <li>Prototype Build &amp; Test</li>
+            <li>Bench Testing</li>
+            <li>Vibration (Shake Table) Testing</li>
+            <li>Environmental / Field Testing</li>
+            <li>Test Reporting</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h4>Fabrication</h4>
+          <ul>
+            <li>MIG / TIG Welding</li>
+            <li>Machining</li>
+            <li>Electrical Wiring</li>
+            <li>Forklift Operation</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h4>Engineering Fundamentals</h4>
+          <ul>
+            <li>Thermodynamics</li>
+            <li>Fluid Mechanics</li>
+            <li>Mechanics of Materials</li>
+            <li>Statics &amp; Dynamics</li>
+            <li>Systems Dynamics / Controls</li>
+            <li>MATLAB</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEADERSHIP & ATHLETICS -->
+  <section id="leadership">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-num mono">04</span>
+        <h2>Leadership &amp; Athletics</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="leadership-grid">
+        <div class="lead-card">
+          <div class="lead-title">U20 Swedish Men's National Lacrosse Team</div>
+          <div class="lead-meta">Bronze Medal · Poland · 2024</div>
+        </div>
+        <div class="lead-card">
+          <div class="lead-title">Captain, Varsity Golf &amp; Lacrosse</div>
+          <div class="lead-meta">High School · Dec 2020 – May 2023</div>
+        </div>
+        <div class="lead-card">
+          <div class="lead-title">Auburn University Club Lacrosse Team</div>
+          <div class="lead-meta">Member · 2023–2025</div>
+        </div>
+        <div class="lead-card">
+          <div class="lead-title">Auburn University Club Mountain Biking Team</div>
+          <div class="lead-meta">Member · 2023–2025</div>
+        </div>
+        <div class="lead-card">
+          <div class="lead-title">Give Kids the World</div>
+          <div class="lead-meta">Volunteer, Kissimmee FL · 100+ hours · 2017–2023</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-num mono">05</span>
+        <h2>Contact</h2>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="contact-panel">
+        <p>Senior Mechanical Engineering student at Auburn University, graduating May 2027. Open to design and manufacturing engineering roles.</p>
+        <div class="contact-actions">
+          <a href="mailto:rylanrunske@gmail.com" class="contact-btn">Email</a>
+          <a href="tel:+13213397313" class="contact-btn secondary">321-339-7313</a>
+          <a href="https://www.linkedin.com/in/rylan-runske-39b769386/" target="_blank" rel="noopener noreferrer" class="contact-btn secondary">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Rylan Runske · Mechanical Engineering · Auburn University</p>
+</footer>
+
+<script>
+  document.querySelectorAll('.rev-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const isOpen = row.getAttribute('aria-expanded') === 'true';
+      row.setAttribute('aria-expanded', String(!isOpen));
+    });
+    row.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        row.click();
+      }
+    });
+  });
+
+  document.querySelectorAll('.fp-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+</script>
+
+</body>
+</html>
